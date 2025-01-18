@@ -17,11 +17,11 @@ class Produce
     private Weight $weight;
 
     public function __construct(
-        $id,
-        $name,
-        $type,
-        $quantity,
-        $weightUnit = 'g'
+        ?int $id,
+        string $name,
+        string $type,
+        int $quantity,
+        string $weightUnit = 'g'
     ) {
         $this->setId($id);
         $this->setName($name);
