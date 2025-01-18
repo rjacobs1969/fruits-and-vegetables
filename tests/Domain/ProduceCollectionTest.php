@@ -5,9 +5,6 @@ namespace App\Tests\Domain;
 use App\Produce\Domain\Collection\ProduceCollection;
 use App\Produce\Domain\Entity\Produce;
 use App\Produce\Domain\Exception\ProduceException;
-use App\Produce\Domain\ValueObject\ProduceType;
-use App\Shared\Domain\Weight;
-use App\Shared\Domain\WeightUnit;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

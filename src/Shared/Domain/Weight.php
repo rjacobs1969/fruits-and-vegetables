@@ -23,6 +23,10 @@ class Weight
 
     public function toUnit(WeightUnit $destinationUnit): self
     {
+        if ($this->unit() === $destinationUnit) {
+            return $this;
+        }
+
         $conversionRate = $this->unit->getConversionRate($destinationUnit);
         $newValue = $this->value * $conversionRate;
 

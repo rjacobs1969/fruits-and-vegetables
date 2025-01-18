@@ -21,12 +21,12 @@ class Produce
         $name,
         $type,
         $quantity,
-        $weightUnit = WeightUnit::GRAM
+        $weightUnit = 'g'
     ) {
         $this->setId($id);
         $this->setName($name);
         $this->type = ProduceType::fromString($type);
-        $originalWeight = new Weight($quantity, $weightUnit);
+        $originalWeight = new Weight($quantity, WeightUnit::from($weightUnit));
         $this->weight = $originalWeight->toUnit(WeightUnit::GRAM);
     }
 
