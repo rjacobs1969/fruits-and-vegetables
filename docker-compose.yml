@@ -1,0 +1,42 @@
+services:
+    php:
+        build: ./docker
+        working_dir: /app
+        container_name: roadsurferCodingTask
+        command: php -S 0.0.0.0:8080 -t /app/public
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/app
+        depends_on:
+            - database
+        networks:
+            - roadsurferCodingTask
+
+    database:
+        image: mysql:latest
+        container_name: roadsurferCodingTask_db
+        environment:
+          MYSQL_ROOT_PASSWORD: s3cr3tR00t
+          MYSQL_DATABASE: produce
+          MYSQL_USER: demo
+          MYSQL_PASSWORD: demo
+        ports:
+            - "3306:3306"
+        command:
+            --performance_schema=OFF
+            --character-set-server=utf8mb4
+            --collation-server=utf8mb4_general_ci
+        volumes:
+            - produce_db:/var/lib/mysql
+        networks:
+            - roadsurferCodingTask
+
+
+
+networks:
+      roadsurferCodingTask:
+
+volumes:
+      produce_db:
+
