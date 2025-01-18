@@ -41,6 +41,11 @@ class ProduceCollection extends AbstractProduceCollection
         $this->items[] = $item;
     }
 
+    public function list(): array
+    {
+        return array_values($this->items);
+    }
+
     public function remove(Produce $itemToRemove): void
     {
         foreach ($this->items as $key => $item) {
@@ -57,13 +62,6 @@ class ProduceCollection extends AbstractProduceCollection
             unset($this->items[$arrayKey]);
         }
     }
-
-    public function list(): array
-    {
-        return array_values($this->items);
-    }
-
-
 
     private function findArrayKeyById(int $id): ?int
     {
