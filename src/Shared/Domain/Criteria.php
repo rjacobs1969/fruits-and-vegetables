@@ -6,7 +6,9 @@ namespace App\Shared\Domain;
 
 class Criteria
 {
-    public function __construct(private ?array $filters = []) {}
+    public $filters = [];
+
+    public function __construct(array $filters = []) {}
 
     public static function createFromSearchRequest(SearchRequest $request): self
     {
