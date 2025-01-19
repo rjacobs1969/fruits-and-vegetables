@@ -17,8 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Throwable;
 
-use function PHPUnit\Framework\isEmpty;
-
 #[Route('/api/v1/produce/{id<\d+>}', name: 'list_produce', methods: ['GET'])]
 final class GetProduceController extends AbstractController
 {
@@ -29,16 +27,17 @@ final class GetProduceController extends AbstractController
         try {
             $SearchRequest = $this->adaptHttpRequestToDomainRequest($request, $id);
             $result = $this->useCase->execute($SearchRequest);
+            $status = empty($result) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
-            return new JsonResponse($result);
+            return new JsonResponse($result, $status);
         } catch (BadRequestException | DomainException $e) {
-            return new JsonResponse('Bad request: '.$e->getMessage(),Response::HTTP_BAD_REQUEST);
+            return new JsonResponse('Bad request: '.$e->getMessage(), Response::HTTP_BAD_REQUEST);
         } catch (Throwable $e) {
             return new JsonResponse('Internal server error '.$e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function adaptHttpRequestToDomainRequest(Request $request, ?int $id): SearchRequest
+    private function adaptHttpRequestToDomainRequest(Request $request, ?int $id): SearchRequest
     {
         $type = $request->query->get('type');
         if ($type !== null && ProduceType::tryFrom($type) === null) {
