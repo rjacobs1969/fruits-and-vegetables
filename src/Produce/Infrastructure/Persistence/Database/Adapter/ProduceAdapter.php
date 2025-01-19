@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Produce\Infrastructure\Persistance\Database\Adapter;
+namespace App\Produce\Infrastructure\Persistence\Database\Adapter;
 
 use App\Produce\Domain\Collection\ProduceCollection;
 use App\Produce\Domain\Entity\Produce;
@@ -57,11 +57,13 @@ final class ProduceAdapter
         );
     }
 
-    public function toCollection(array $raws): ProduceCollection
+    public function toCollection(?array $raws = null): ProduceCollection
     {
         $collection = new ProduceCollection();
-        foreach ($raws as $raw) {
-            $collection->add($this->convertFromDatabaseValues($raw));
+        if (is_array($raws)) {
+            foreach ($raws as $raw) {
+                $collection->add($this->convertFromDatabaseValues($raw));
+            }
         }
 
         return $collection;

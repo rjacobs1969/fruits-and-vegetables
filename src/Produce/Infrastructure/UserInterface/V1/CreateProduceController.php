@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Produce\Infrastructure\UserInterface\V1;
 
 use App\Produce\Application\UseCase\CreateProduceUseCase;
-use App\Produce\Domain\Entity\Produce;
+use App\Produce\Infrastructure\UserInterface\Adapter\ProduceAdapter;
 use DomainException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +18,13 @@ use Throwable;
 #[Route('/api/v1/produce/', name: 'list_produce', methods: ['POST'])]
 final class GetProduceController extends AbstractController
 {
-    public function __construct(private CreateProduceUseCase $useCase) {}
+    public function __construct(private CreateProduceUseCase $useCase, private ProduceAdapter $adapter) {}
 
     public function __invoke(Request $request)
     {
         try {
             $postContent = $this->getValidatedPostContent($request);
-            $newProduce = $this->adaptToDomain($postContent);
+            $newProduce = $this->adapter->adaptToDomain($postContent);
             $result = $this->useCase->execute($newProduce);
 
             return new JsonResponse($result, Response::HTTP_CREATED);
@@ -50,16 +50,4 @@ final class GetProduceController extends AbstractController
 
         return $content;
     }
-
-    private function adaptToDomain(array $data): Produce
-    {
-        return new Produce(
-            isset($data['id']) ? (int)$data['id'] : null,
-            (string) $data['name'] ?? '',
-            (string) $data['type'] ?? '',
-            (int) $data['quantity'] ?? 0,
-            (string) $data['unit'] ?? 'g'
-        );
-    }
-
 }
