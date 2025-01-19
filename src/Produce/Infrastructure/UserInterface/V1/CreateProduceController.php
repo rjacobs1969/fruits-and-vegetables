@@ -6,6 +6,7 @@ namespace App\Produce\Infrastructure\UserInterface\V1;
 
 use App\Produce\Application\UseCase\CreateProduceUseCase;
 use App\Produce\Infrastructure\UserInterface\Adapter\ProduceAdapter;
+use App\Shared\Domain\PersistException;
 use DomainException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,8 @@ final class CreateProduceController extends AbstractController
             return new JsonResponse($result, Response::HTTP_CREATED);
         } catch (BadRequestException | DomainException $e) {
             return new JsonResponse('Bad request: '.$e->getMessage(), Response::HTTP_BAD_REQUEST);
+        } catch (PersistException $e) {
+            return new JsonResponse('Cannot create: '.$e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Throwable $e) {
             return new JsonResponse('Internal server error '.$e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
