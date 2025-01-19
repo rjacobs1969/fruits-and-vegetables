@@ -27,7 +27,7 @@ class ProduceDbalRepository implements ProduceRepository
         try {
             $data = $this->adapter->convertToDatabaseValues($produce);
             $this->connection->insert(self::DATABASE_TABLE, $data);
-            $produce->setId($this->connection->lastInsertId());
+            $produce->setId((int) $this->connection->lastInsertId());
         } catch (ConstraintViolationException | DatabaseObjectExistsException $e) {
             throw new PersistException('Item already exists, id: '.$produce->getId());
         } catch (Exception $e) {
