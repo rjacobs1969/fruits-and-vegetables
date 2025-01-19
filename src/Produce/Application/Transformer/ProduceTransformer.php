@@ -41,7 +41,7 @@ class ProduceTransformer
             'id' => $produce->getId(),
             'name' => $produce->getName(),
             'type' => $produce->getType(),
-            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit),
+            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit)->value(),
             'unit' => $displayWeightUnit->value,
         ];
     }

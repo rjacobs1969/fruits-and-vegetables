@@ -4,5 +4,5 @@ when@dev:
         prefix: /_error
 
 kernel:
-    resource: ../src/Kernel.php
+    resource: ../../src/Kernel.php
     type: attribute
