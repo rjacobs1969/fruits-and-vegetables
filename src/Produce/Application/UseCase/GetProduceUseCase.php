@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Produce\Application;
+namespace App\Produce\Application\UseCase;
 
 use App\Produce\Application\Transformer\ProduceTransformer;
 use App\Produce\Domain\Repository\ProduceRepository;
@@ -18,6 +18,6 @@ final class GetProduceUseCase
         $criteria = Criteria::createFromSearchRequest($request);
         $produceCollection = $this->produceRepository->retrieve($criteria);
 
-        return $this->transformer->transformCollection($produceCollection, $request->weightUnit());
+        return $this->transformer->transform($produceCollection, $request);
     }
 }
