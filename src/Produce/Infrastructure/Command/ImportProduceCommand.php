@@ -16,6 +16,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
+use function PHPUnit\Framework\isNull;
+
 #[AsCommand(name: 'import')]
 class ImportProduceCommand extends Command
 {
@@ -47,17 +49,27 @@ class ImportProduceCommand extends Command
             $fruitsCollection = FruitsCollection::fromCollection($produceCollection);
             $vegetablesCollection = VegetablesCollection::fromCollection($produceCollection);
 
-            $this->tryPersistAll($fruitsCollection, $output);
-            $this->tryPersistAll($vegetablesCollection, $output);
+            $allFruitsImported = $this->tryPersistAll($fruitsCollection, $output);
+            $allVegiesImported = $this->tryPersistAll($vegetablesCollection, $output);
+
+            if ($allFruitsImported === false || $allVegiesImported === false) {
+                $output->writeln(
+                        sprintf(
+                            "Import finished with failures %s",
+                            (!$output->isVerbose()) ? ', use verbose flag -v to see details' : '.'
+                        )
+                    );
+                return Command::FAILURE;
+            }
 
             return Command::SUCCESS;
         } catch (Throwable $e) {
-            $output->writeln("Import failed: " . $e->getMessage());
+            $output->write("Import failed: " . $e->getMessage());
             return Command::FAILURE;
         }
     }
 
-    private function tryPersistAll(ProduceCollection $collection, OutputInterface $output): void
+    private function tryPersistAll(ProduceCollection $collection, OutputInterface $output): bool
     {
         $numberOfPersistSucces = 0;
         foreach ($collection->list() as $item) {
@@ -65,15 +77,16 @@ class ImportProduceCommand extends Command
                 $this->peristUseCase->execute($item);
                 $numberOfPersistSucces++;
             } catch (Throwable $e) {
-                $output->writeln(
+                $output->write(
                     sprintf(
-                        "Failed storing %d %s: %s \n",
-                        $item->getId() ?? '',
+                        "Failed storing %s: %s",
                         $item->getName(),
                         $e->getMessage()
                     ),
+                    true,
                     $output::VERBOSITY_VERBOSE
                 );
+                throw $e;
                 // Don't stop on failure of storing this item, continue with the rest
             }
         }
@@ -82,18 +95,12 @@ class ImportProduceCommand extends Command
                 "%d out of %d %ss successfully imported",
                 $numberOfPersistSucces,
                 $collection->count(),
-                $collection->collectionType()->value
+                $collection->collectionType()
             )
         );
 
-        if ($numberOfPersistSucces < $collection->count() && !$output->isVerbose()) {
-            $output->writeln(
-                sprintf(
-                    "%d %ss failed to import, use verbose flag -v to see details",
-                    $collection->count()-$numberOfPersistSucces,
-                    $collection->collectionType()->value
-                )
-            );
-        }
+        $isSuccess = ($numberOfPersistSucces === $collection->count());
+
+        return $isSuccess;
     }
 }
