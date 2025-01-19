@@ -33,11 +33,15 @@ class ProduceTransformer
 
     public function transformProduce(Produce $produce, ?WeightUnit $displayWeightUnit = null): array
     {
+        if ($displayWeightUnit === null){
+            $displayWeightUnit = $produce->getWeight()->unit();
+        }
+
         return [
             'id' => $produce->getId(),
             'name' => $produce->getName(),
             'type' => $produce->getType(),
-            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit ?? $produce->getWeight()->unit()),
+            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit),
             'unit' => $displayWeightUnit->value,
         ];
     }
