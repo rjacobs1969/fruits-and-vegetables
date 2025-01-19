@@ -8,8 +8,8 @@ use App\Shared\Domain\Criteria;
 
 interface ProduceRepository
 {
-    public function findAll(): ProduceCollection;
-    public function findById(int $id): ?Produce;
-    public function findByCriteria(Criteria $criteria): ProduceCollection;
     public function create(Produce $produce): void;
+    public function retrieve(Criteria $criteria): ProduceCollection;
+    public function update(Produce $produce): void;
+    public function delete(int $id): void;
 }

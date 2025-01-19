@@ -20,7 +20,7 @@ class ProduceDbalRepository implements ProduceRepository
 
     public function __construct(private Connection $connection, private ProduceAdapter $adapter) {}
 
-    public function findAll(): ProduceCollection
+    /*public function findAll(): ProduceCollection
     {
         $raw = $this->baseQuery()
                     ->executeQuery()
@@ -52,6 +52,27 @@ class ProduceDbalRepository implements ProduceRepository
                      ->fetchAllAssociative();
 
         return $this->adapter->toCollection($raw);
+    }*/
+
+    public function create(Produce $produce): void
+    {
+        $data = $this->adapter->convertToDatabaseValues($produce);
+        $this->connection->insert(self::DATABASE_TABLE, $data);
+        $produce->setId($this->connection->lastInsertId());
+    }
+
+    public function retrieve(Criteria $criteria): ProduceCollection
+    {
+        $query = $this->baseQuery();
+        foreach ($criteria->filters as $filterName => $value) {
+            $field = $this->adapter->getFieldFromName($filterName);
+            $query->andWhere("$field = :$field")
+                  ->setParameter($field, $value, $this->adapter->getParameterType($field));
+        }
+        $raw = $query->executeQuery()
+                     ->fetchAllAssociative();
+
+        return $this->adapter->toCollection($raw);
     }
 
     public function update(Produce $produce): void
@@ -63,12 +84,7 @@ class ProduceDbalRepository implements ProduceRepository
         );
     }
 
-    public function create(Produce $produce): void
-    {
-        $data = $this->adapter->convertToDatabaseValues($produce);
-        $this->connection->insert(self::DATABASE_TABLE, $data);
-        $produce->setId($this->connection->lastInsertId());
-    }
+    public function delete(int $id): void {}
 
     private function baseQuery(): QueryBuilder
     {
