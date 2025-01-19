@@ -10,7 +10,6 @@ use App\Produce\Domain\Repository\ProduceRepository;
 use App\Produce\Infrastructure\Persistance\Database\Adapter\ProduceAdapter;
 use App\Shared\Domain\Criteria;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 class ProduceDbalRepository implements ProduceRepository
