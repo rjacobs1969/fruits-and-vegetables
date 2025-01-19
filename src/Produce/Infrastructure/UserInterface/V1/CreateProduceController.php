@@ -15,8 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Throwable;
 
-#[Route('/api/v1/produce/', name: 'list_produce', methods: ['POST'])]
-final class GetProduceController extends AbstractController
+#[Route('/api/v1/produce/', name: 'create_produce', methods: ['POST'])]
+final class CreateProduceController extends AbstractController
 {
     public function __construct(private CreateProduceUseCase $useCase, private ProduceAdapter $adapter) {}
 
@@ -28,7 +28,6 @@ final class GetProduceController extends AbstractController
             $result = $this->useCase->execute($newProduce);
 
             return new JsonResponse($result, Response::HTTP_CREATED);
-
         } catch (BadRequestException | DomainException $e) {
             return new JsonResponse('Bad request: '.$e->getMessage(), Response::HTTP_BAD_REQUEST);
         } catch (Throwable $e) {

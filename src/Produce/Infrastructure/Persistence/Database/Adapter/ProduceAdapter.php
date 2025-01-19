@@ -53,7 +53,7 @@ final class ProduceAdapter
             (int)    $raw[self::DB_ID_FIELD],
             (string) $raw[self::DB_NAME_FIELD],
             (string) $raw[self::DB_TYPE_FIELD],
-            (int)    $raw[self::DB_WEIGHT_FIELD]
+            (float)  $raw[self::DB_WEIGHT_FIELD]
         );
     }
 
@@ -74,7 +74,7 @@ final class ProduceAdapter
         return self::FILTER_TO_FIELDS[$name];
     }
 
-    public function getParameterType(string $field): ParameterType
+    public function getParameterType(string $field): int
     {
         return self::DB_FIELD_TYPES[$field];
     }

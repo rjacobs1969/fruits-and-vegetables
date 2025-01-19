@@ -20,7 +20,7 @@ class Produce
         ?int $id,
         string $name,
         string $type,
-        int $quantity,
+        float $quantity,
         string $weightUnit = 'g'
     ) {
         $this->setId($id);

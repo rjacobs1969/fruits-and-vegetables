@@ -69,7 +69,7 @@ class ProduceDbalRepository implements ProduceRepository
                 ProduceAdapter::DB_ID_FIELD,
                 ProduceAdapter::DB_NAME_FIELD,
                 ProduceAdapter::DB_TYPE_FIELD,
-                ProduceAdapter::DB_TYPE_FIELD
+                ProduceAdapter::DB_WEIGHT_FIELD
             )
             ->from(self::DATABASE_TABLE);
 

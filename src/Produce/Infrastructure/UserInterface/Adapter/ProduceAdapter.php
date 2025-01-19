@@ -15,7 +15,7 @@ class ProduceAdapter
             isset($data['id']) ? (int) $data['id'] : null,
             (string) $data['name'] ?? '',
             (string) $data['type'] ?? '',
-            (int)    $data['quantity'] ?? 0,
+            (float)  $data['quantity'] ?? 0,
             (string) $data['unit'] ?? 'g'
         );
     }

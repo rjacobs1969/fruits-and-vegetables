@@ -50,7 +50,7 @@ class SearchRequest
         }
 
         if ($this->type !== null) {
-            $filters['type'] = $this->type;
+            $filters['type'] = (string) $this->type->value;
         }
 
         if (!empty($this->name)) {

@@ -6,12 +6,12 @@ namespace App\Shared\Domain;
 
 class Weight
 {
-    public function __construct(private int $value, private WeightUnit $unit)
+    public function __construct(private float $value, private WeightUnit $unit)
     {
         $this->validate($this->value);
     }
 
-    public function value(): int
+    public function value(): float
     {
         return $this->value;
     }
@@ -30,10 +30,10 @@ class Weight
         $conversionRate = $this->unit->getConversionRate($destinationUnit);
         $newValue = $this->value * $conversionRate;
 
-        return new self((int) $newValue, $destinationUnit);
+        return new self((float) $newValue, $destinationUnit);
     }
 
-    private function validate(int $value): void
+    private function validate(float $value): void
     {
         if ($value < 0) {
             throw new WeightException('Weight cannot be negative');
