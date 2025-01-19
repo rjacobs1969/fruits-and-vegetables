@@ -10,6 +10,7 @@ interface ProduceRepository
 {
     public function create(Produce $produce): void;
     public function retrieve(Criteria $criteria): ProduceCollection;
-    public function update(Produce $produce): void;
-    public function delete(int $id): void;
+    // Not in assignment, so not done (YAGNI)
+    // public function update(Produce $produce): void;
+    // public function delete(int $id): void;
 }

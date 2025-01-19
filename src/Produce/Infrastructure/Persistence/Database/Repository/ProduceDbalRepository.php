@@ -11,7 +11,6 @@ use App\Produce\Infrastructure\Persistance\Database\Adapter\ProduceAdapter;
 use App\Shared\Domain\Criteria;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 class ProduceDbalRepository implements ProduceRepository
@@ -19,40 +18,6 @@ class ProduceDbalRepository implements ProduceRepository
     private const DATABASE_TABLE = 'produce';
 
     public function __construct(private Connection $connection, private ProduceAdapter $adapter) {}
-
-    /*public function findAll(): ProduceCollection
-    {
-        $raw = $this->baseQuery()
-                    ->executeQuery()
-                    ->fetchAllAssociative();
-
-        return $this->adapter->toCollection($raw);
-    }
-
-    public function findById(int $id): ?Produce
-    {
-        $raw = $this->baseQuery()
-                ->where("id = :id")
-                ->setParameter('id', $id, ParameterType::INTEGER)
-                ->executeQuery()
-                ->fetchAssociative();
-
-        return $this->adapter->convertFromDatabaseValues($raw);
-    }
-
-    public function findByCriteria(Criteria $criteria): ProduceCollection
-    {
-        $query = $this->baseQuery();
-        foreach ($criteria->filters as $filterName => $value) {
-            $field = $this->adapter->getFieldFromName($filterName);
-            $query->andWhere("$field = :$field")
-                  ->setParameter($field, $value, $this->adapter->getParameterType($field));
-        }
-        $raw = $query->executeQuery()
-                     ->fetchAllAssociative();
-
-        return $this->adapter->toCollection($raw);
-    }*/
 
     public function create(Produce $produce): void
     {
@@ -83,8 +48,6 @@ class ProduceDbalRepository implements ProduceRepository
             [ProduceAdapter::DB_ID_FIELD => $produce->getId()]
         );
     }
-
-    public function delete(int $id): void {}
 
     private function baseQuery(): QueryBuilder
     {
