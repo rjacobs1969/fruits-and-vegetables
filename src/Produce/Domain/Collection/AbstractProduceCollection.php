@@ -46,9 +46,13 @@ abstract class AbstractProduceCollection implements IteratorAggregate, Countable
         return false;
     }
 
-    public function collectionType(): ProduceType
+    public function collectionType(): string
     {
-        return static::PRODUCE_TYPE_FILTER;
+        if (static::PRODUCE_TYPE_FILTER === null) {
+            return '';
+        }
+
+        return static::PRODUCE_TYPE_FILTER->value;
     }
 
     protected function listByType(ProduceType $type): array
