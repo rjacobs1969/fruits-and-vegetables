@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Produce\Infrastructure\UserInterface\V1;
 
-use App\Produce\Application\GetProduceUseCase;
+use App\Produce\Application\UseCase\GetProduceUseCase;
 use App\Produce\Domain\ValueObject\ProduceType;
 use App\Shared\Domain\DomainException;
 use App\Shared\Domain\SearchRequest;
