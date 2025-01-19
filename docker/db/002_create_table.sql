@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `produce`;
 
 CREATE TABLE `produce`
 (
-    `id`               int          NOT NULL AUTO_INCREMENT,
+    `id`               INT          NOT NULL AUTO_INCREMENT,
     `name`             VARCHAR(255) NOT NULL,
     `type`             VARCHAR(16)  NOT NULL,
     `weight_in_grams`  INT          NOT NULL,
