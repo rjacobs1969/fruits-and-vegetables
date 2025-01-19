@@ -21,7 +21,7 @@ class ProduceTransformer
         return $this->transformCollection($collection, $displayWeightUnit);
     }
 
-    public function transformCollection(ProduceCollection $collection, WeightUnit $displayWeightUnit): array
+    public function transformCollection(ProduceCollection $collection, ?WeightUnit $displayWeightUnit = null): array
     {
         $result = [];
         foreach($collection->list() as $produce) {
@@ -31,13 +31,13 @@ class ProduceTransformer
         return $result;
     }
 
-    public function transformProduce(Produce $produce, WeightUnit $displayWeightUnit): array
+    public function transformProduce(Produce $produce, ?WeightUnit $displayWeightUnit = null): array
     {
         return [
             'id' => $produce->getId(),
             'name' => $produce->getName(),
             'type' => $produce->getType(),
-            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit),
+            'quantity' => $produce->getWeight()->toUnit($displayWeightUnit ?? $produce->getWeight()->unit()),
             'unit' => $displayWeightUnit->value,
         ];
     }
