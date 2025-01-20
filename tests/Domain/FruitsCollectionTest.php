@@ -12,7 +12,7 @@ class FruitsCollectionTest extends TestCase
 {
     private FruitsCollection $collection;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->collection = new FruitsCollection();
