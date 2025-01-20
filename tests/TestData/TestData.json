@@ -1,16 +1,16 @@
 [
     {
-        "id": 1,
-        "name": "Apple",
+        "id": 4,
+        "name": "Kiwi",
         "type": "fruit",
-        "quantity": 1250,
+        "quantity": 250,
         "unit": "g"
     },
     {
-        "id": 2,
-        "name": "Beetroot",
+        "id": 5,
+        "name": "Mais",
         "type": "vegetable",
-        "quantity": 99,
+        "quantity": 3,
         "unit": "kg"
     }
 ]
