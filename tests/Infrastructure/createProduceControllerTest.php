@@ -3,7 +3,6 @@
 namespace App\Test\Infrastructure;
 
 use App\Produce\Infrastructure\Persistence\Database\Repository\ProduceDbalRepository;
-use App\Shared\Domain\Criteria;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -60,6 +59,22 @@ class CreateProduceControllerTest extends WebTestCase
 
         $this->assertGreaterThanOrEqual(0, $createdId);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+    }
+
+    public function testCannotCreateDuplicateIds(): void
+    {
+        $produce = json_encode([
+            'id' => self::ID_FOR_TEST,
+            'name' => 'Black beans',
+            'type' => 'vegetable',
+            'quantity' => 5,
+            'unit' => 'kg'
+        ]);
+
+        $this->doPostRequest($produce);
+        $this->doPostRequest($produce); // Posting the same id twice, second should fail
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testFailIfEmptyPostData(): void
