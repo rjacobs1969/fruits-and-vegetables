@@ -27,9 +27,8 @@ final class GetProduceController extends AbstractController
         try {
             $SearchRequest = $this->adaptHttpRequestToDomainRequest($request, $id);
             $result = $this->useCase->execute($SearchRequest);
-            $status = empty($result) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
-            return new JsonResponse($result, $status);
+            return new JsonResponse($result);
         } catch (BadRequestException | DomainException $e) {
             return new JsonResponse('Bad request: '.$e->getMessage(), Response::HTTP_BAD_REQUEST);
         } catch (Throwable $e) {
@@ -45,8 +44,8 @@ final class GetProduceController extends AbstractController
 		}
 
         $name = $request->query->get('name');
-        if ($name !== null && !is_string($name)) {
-			throw new BadRequestException("Optional name filter parameter given but not valid: " . $name);
+        if ($name !== null && empty($name)) {
+			throw new BadRequestException("Optional name filter parameter specified but no value was given");
 		}
 
         $weightUnit = $request->query->get('unit');
