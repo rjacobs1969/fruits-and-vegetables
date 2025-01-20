@@ -41,7 +41,7 @@ class ProduceDbalRepository implements ProduceRepository
         foreach ($criteria->filters as $filterName => $value) {
             $field = $this->adapter->getFieldFromName($filterName);
             $query->andWhere("$field = :$field")
-                ->setParameter($field, $value, $this->adapter->getParameterType($field));
+                  ->setParameter($field, $value, $this->adapter->getParameterType($field));
         }
         $raw = $query->executeQuery()->fetchAllAssociative();
 
@@ -50,6 +50,11 @@ class ProduceDbalRepository implements ProduceRepository
 
     public function update(Produce $produce): void
     {
+        if ($produce->getId() === null) {
+            $this->create($produce);
+            return;
+        }
+
         try {
             $this->connection->update(
                 self::DATABASE_TABLE,

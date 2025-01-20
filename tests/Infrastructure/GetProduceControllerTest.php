@@ -80,6 +80,7 @@ class GetProduceControllerTest extends WebTestCase
         $this->client->request('GET', "/api/v1/produce/1?unit=kg");
 
         $content = json_decode($this->client->getResponse()->getContent(), true);
+
         $this->assertEquals(1.25, $content['quantity'] ?? 'notset');
         $this->assertEquals('kg', $content['unit'] ?? 'notset');
     }

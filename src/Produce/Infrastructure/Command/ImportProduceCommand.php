@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Produce\Infrastructure\Command;
 
-use App\Produce\Application\UseCase\CreateProduceUseCase;
+use App\Produce\Application\UseCase\UpdateProduceUseCase;
 use App\Produce\Domain\Collection\FruitsCollection;
 use App\Produce\Domain\Collection\ProduceCollection;
 use App\Produce\Domain\Collection\VegetablesCollection;
-use App\Produce\Domain\Exception\ProduceException;
 use App\Produce\Infrastructure\UserInterface\Adapter\ProduceAdapter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +21,7 @@ class ImportProduceCommand extends Command
 {
     private const FILE = 'fileName';
 
-    public function __construct(private CreateProduceUseCase $peristUseCase, private ProduceAdapter $adapter)
+    public function __construct(private UpdateProduceUseCase $peristUseCase, private ProduceAdapter $adapter)
     {
         parent::__construct();
     }
@@ -63,21 +62,8 @@ class ImportProduceCommand extends Command
 
     private function persistAll(ProduceCollection $collection): void
     {
-        $numImported = 0;
-        try {
-            foreach ($collection->list() as $item) {
-                $this->peristUseCase->execute($item);
-                $numImported++;
-            }
-        } catch (Throwable $e) {
-            throw new ProduceException(
-                sprintf(
-                    "Imported %d %ss\n%s",
-                    $numImported,
-                    $collection->collectionType(),
-                    $e->getMessage()
-                )
-            );
+        foreach ($collection->list() as $item) {
+            $this->peristUseCase->execute($item);
         }
     }
 }

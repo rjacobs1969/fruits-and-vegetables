@@ -64,11 +64,11 @@ class CreateProduceControllerTest extends WebTestCase
     public function testCannotCreateDuplicateIds(): void
     {
         $produce = json_encode([
-            'id' => self::ID_FOR_TEST,
-            'name' => 'Black beans',
-            'type' => 'vegetable',
-            'quantity' => 5,
-            'unit' => 'kg'
+            'id' => 1,
+            'name' => 'Apple',
+            'type' => 'fruit',
+            'quantity' => 1250,
+            'unit' => 'g'
         ]);
 
         $this->doPostRequest($produce);
@@ -160,6 +160,5 @@ class CreateProduceControllerTest extends WebTestCase
         if ($id >= 0) {
             $this->testRepository->delete($id);
         }
-         //print_r($this->testRepository->retrieve(new Criteria()));
     }
 }
