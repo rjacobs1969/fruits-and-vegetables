@@ -32,8 +32,8 @@ final class GetProduceController extends AbstractController
             return new JsonResponse($result, $status);
         } catch (BadRequestException | DomainException $e) {
             return new JsonResponse('Bad request: '.$e->getMessage(), Response::HTTP_BAD_REQUEST);
-        //} catch (Throwable $e) {
-        //    return new JsonResponse('Internal server error '.$e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (Throwable $e) {
+            return new JsonResponse('Internal server error '.$e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
