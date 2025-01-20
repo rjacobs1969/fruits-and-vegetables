@@ -37,22 +37,32 @@ class ProduceDbalRepository implements ProduceRepository
 
     public function retrieve(Criteria $criteria): ProduceCollection
     {
-        $query = $this->baseQuery();
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->select(
+                ProduceAdapter::DB_ID_FIELD,
+                ProduceAdapter::DB_NAME_FIELD,
+                ProduceAdapter::DB_TYPE_FIELD,
+                ProduceAdapter::DB_WEIGHT_FIELD
+            )->from(self::DATABASE_TABLE);
+
         foreach ($criteria->filters as $filterName => $value) {
             $field = $this->adapter->getFieldFromName($filterName);
-            $query->andWhere("$field = :$field")
-                  ->setParameter($field, $value, $this->adapter->getParameterType($field));
+            $queryBuilder->andWhere("$field = :$field");
+            $queryBuilder->setParameter($field, $value, $this->adapter->getParameterType($field));
         }
-        $raw = $query->executeQuery()->fetchAllAssociative();
+        $raw = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return $this->adapter->toCollection($raw);
     }
 
     public function update(Produce $produce): void
     {
-        if ($produce->getId() === null) {
+        try {
             $this->create($produce);
+
             return;
+        } catch (PersistException $e) {
+            // Continue using update
         }
 
         try {
@@ -61,8 +71,8 @@ class ProduceDbalRepository implements ProduceRepository
                 $this->adapter->convertToDatabaseValues($produce),
                 [ProduceAdapter::DB_ID_FIELD => $produce->getId()]
             );
-        } catch (Exception) {
-            throw new PersistException('Item not updated');
+        } catch (Exception $e) {
+            throw new PersistException('Item not updated: '.$e->getMessage());
         }
     }
 
@@ -72,20 +82,5 @@ class ProduceDbalRepository implements ProduceRepository
             self::DATABASE_TABLE,
             [ProduceAdapter::DB_ID_FIELD => $id]
         );
-    }
-
-    private function baseQuery(): QueryBuilder
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder
-            ->select(
-                ProduceAdapter::DB_ID_FIELD,
-                ProduceAdapter::DB_NAME_FIELD,
-                ProduceAdapter::DB_TYPE_FIELD,
-                ProduceAdapter::DB_WEIGHT_FIELD
-            )
-            ->from(self::DATABASE_TABLE);
-
-        return $queryBuilder;
     }
 }

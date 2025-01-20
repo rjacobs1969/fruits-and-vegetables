@@ -1,29 +1,4 @@
-# What's this?
-This is my implementation of the 🍎🥕 Fruits and Vegetables assignment as outlined in [this document](assignment.md)
-
-* My implementation uses MySQL V9.1.0 MySQL Community Server
-* PHP is updated to 8.3.15
-* Symfony updated to V7.2
-
-# 🏗️ Building and 🏃🏾Running
-
-* Build (aka first run) with
-```bash
-    docker compose up -d --build  && docker compose exec -u root roadsurferCodingTask sh -c 'composer install -n'
-```
-
-* Running the tests
-```bash
-docker exec -it roadsurferCodingTask ./bin/phpunit
-```
-
-* Importing the `request.json`
-```bash
-docker exec -it roadsurferCodingTask ./bin/console import -v ./request.json
-```
-
-
-
+# 🍎🥕 Fruits and Vegetables
 
 ## 🎯 Goal
 We want to build a service which will take a `request.json` and:
