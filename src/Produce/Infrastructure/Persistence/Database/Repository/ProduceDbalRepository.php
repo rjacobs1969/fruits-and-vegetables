@@ -18,7 +18,7 @@ use Exception;
 
 class ProduceDbalRepository implements ProduceRepository
 {
-    private const DATABASE_TABLE = 'produce.produce';
+    private const DATABASE_TABLE = 'produce';
 
     public function __construct(private Connection $connection, private ProduceAdapter $adapter) {}
 
