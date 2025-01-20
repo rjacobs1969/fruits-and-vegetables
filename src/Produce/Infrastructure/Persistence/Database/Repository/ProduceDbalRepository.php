@@ -61,6 +61,14 @@ class ProduceDbalRepository implements ProduceRepository
         }
     }
 
+    public function delete(int $id): void
+    {
+        $this->connection->delete(
+            self::DATABASE_TABLE,
+            [ProduceAdapter::DB_ID_FIELD => $id]
+        );
+    }
+
     private function baseQuery(): QueryBuilder
     {
         $queryBuilder = $this->connection->createQueryBuilder();

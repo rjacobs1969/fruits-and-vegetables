@@ -12,6 +12,7 @@ class GetProduceControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
+        self::ensureKernelShutdown();
         $this->client = static::createClient();
     }
 
