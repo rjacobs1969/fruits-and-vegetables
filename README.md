@@ -39,14 +39,14 @@ you can select filters with query parameters:
 
 Examples:
 
-get item with id 12
-`curl http://localhost:8080/api/v1/produce/12`
-get item with id 12, displayed in kg
-`curl http://localhost:8080/api/v1/produce/12?unit=kg`
-list all fruit items in kg
-`curl http://localhost:8080/api/v1/produce?type=fruit&unit=kg`
-list all produce items with the name bananas
-`curl http://localhost:8080/api/v1/produce?name=bananas`
+- get item with id 12
+  curl http://localhost:8080/api/v1/produce/12
+- get item with id 12, displayed in kg
+  curl http://localhost:8080/api/v1/produce/12?unit=kg
+- list all fruit items in kg
+  curl http://localhost:8080/api/v1/produce?type=fruit&unit=kg
+- list all produce items with the name bananas
+  curl http://localhost:8080/api/v1/produce?name=bananas
 
 
 
