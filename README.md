@@ -39,71 +39,27 @@ you can select filters with query parameters:
 
 Examples:
 
-- get item with id 12
-  curl http://localhost:8080/api/v1/produce/12
-- get item with id 12, displayed in kg
-  curl http://localhost:8080/api/v1/produce/12?unit=kg
-- list all fruit items in kg
-  curl http://localhost:8080/api/v1/produce?type=fruit&unit=kg
-- list all produce items with the name bananas
-  curl http://localhost:8080/api/v1/produce?name=bananas
+- get item with id 12 http://localhost:8080/api/v1/produce/12
+- get item with id 12, displayed in kg http://localhost:8080/api/v1/produce/12?unit=kg
+- list all fruit items in kg http://localhost:8080/api/v1/produce?type=fruit&unit=kg
+- list all produce items with the name bananas http://localhost:8080/api/v1/produce?name=bananas
 
+* Use POST request to create a new produce item
 
-
-## 🎯 Goal
-We want to build a service which will take a `request.json` and:
-* Process the file and create two separate collections for `Fruits` and `Vegetables`
-* Each collection has methods like `add()`, `remove()`, `list()`;
-* Units have to be stored as grams;
-* Store the collections in a storage engine of your choice. (e.g. Database, In-memory)
-* Provide an API endpoint to query the collections. As a bonus, this endpoint can accept filters to be applied to the returning collection.
-* Provide another API endpoint to add new items to the collections (i.e., your storage engine).
-* As a bonus you might:
-  * consider giving option to decide which units are returned (kilograms/grams);
-  * how to implement `search()` method collections;
-  * use latest version of Symfony's to embbed your logic
-
-### ✔️ How can I check if my code is working?
-You have two ways of moving on:
-* You call the Service from PHPUnit test like it's done in dummy test (just run `bin/phpunit` from the console)
-
-or
-
-* You create a Controller which will be calling the service with a json payload
-
-## 💡 Hints before you start working on it
-* Keep KISS, DRY, YAGNI, SOLID principles in mind
-* Timebox your work - we expect that you would spend between 3 and 4 hours.
-* Your code should be tested
-
-## When you are finished
-* Please upload your code to a public git repository (i.e. GitHub, Gitlab)
-
-## 🐳 Docker image
-Optional. Just here if you want to run it isolated.
-
-### 📥 Pulling image
 ```bash
-docker pull tturkowski/fruits-and-vegetables
+curl -X POST 'http://localhost:8080/api/v1/produce' -d '{"id": 21, "name": "Green beans", "type": "vegetable", "quantity": 150, "unit": "g"}' -H "Content-Type: application/json"
 ```
 
-### 🧱 Building image
+note, this is CREATE only; when specifying an id field that already exists it will refuse to create the item.
+update (or delete) funcionality was not requested in the assignment.
+you can ommit the id in the POST data and the API will automatically one and persist the item, for example:
+
 ```bash
-docker build -t tturkowski/fruits-and-vegetables -f docker/Dockerfile .
+curl -X POST 'http://localhost:8080/api/v1/produce' -d '{"name": "Black beans", "type": "vegetable", "quantity": 2, "unit": "kg"}' -H "Content-Type: application/json"
 ```
 
-### 🏃‍♂️ Running container
+# Misc:
+If needed, You can empty the database with
 ```bash
-docker run -it -w/app -v$(pwd):/app tturkowski/fruits-and-vegetables sh
-```
-
-### 🛂 Running tests
-```bash
-docker run -it -w/app -v$(pwd):/app tturkowski/fruits-and-vegetables bin/phpunit
-```
-
-### ⌨️ Run development server
-```bash
-docker run -it -w/app -v$(pwd):/app -p8080:8080 tturkowski/fruits-and-vegetables php -S 0.0.0.0:8080 -t /app/public
-# Open http://127.0.0.1:8080 in your browser
+mysql -h localhost -P 3306 -p produce --password=demo --protocol=tcp -u demo -e "use produce; truncate produce;"
 ```
