@@ -1,6 +1,8 @@
 USE `produce`;
 
-CREATE TABLE IF NOT EXISTS `produce`
+DROP TABLE IF EXISTS `produce`;
+
+CREATE TABLE `produce`
 (
     `id`               INT          NOT NULL AUTO_INCREMENT,
     `name`             VARCHAR(255) NOT NULL,
