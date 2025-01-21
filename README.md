@@ -22,6 +22,31 @@ docker exec -it roadsurferCodingTask ./bin/phpunit
 docker exec -it roadsurferCodingTask ./bin/console import -v ./request.json
 ```
 
+* Api endpoint
+
+Use GET requests to query the whole collection
+```bash
+http://localhost:8080/api/v1/produce
+```
+or get one record by it's id
+```bash
+http://localhost:8080/api/v1/produce/{id}
+```
+you can select filters with query parameters:
+- type list only item of one type
+- unit display weight in gram / kilogram
+- name filter by name
+
+Examples:
+
+get item with id 12
+`curl http://localhost:8080/api/v1/produce/12`
+get item with id 12, displayed in kg
+`curl http://localhost:8080/api/v1/produce/12?unit=kg`
+list all fruit items in kg
+`curl http://localhost:8080/api/v1/produce?type=fruit&unit=kg`
+list all produce items with the name bananas
+`curl http://localhost:8080/api/v1/produce?name=bananas`
 
 
 
