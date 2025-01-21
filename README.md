@@ -9,7 +9,7 @@ This is my implementation of the 🍎🥕 Fruits and Vegetables assignment as ou
 
 * Build (aka first run) with
 ```bash
-    docker compose up -d --build  && docker compose exec -u root roadsurferCodingTask sh -c 'composer install -n'
+    docker compose up -d --build  && docker exec -u root roadsurferCodingTask sh -c 'composer install -n'
 ```
 
 * Running the tests
